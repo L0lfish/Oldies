@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Jquery start</title>
+    <script src="node_modules/jquery/dist/jquery.min.js"></script>
+    <script>    $(document).ready(function () {
+                var buttons = $("#buttonBar button")
+                $(buttons).prop("disabled", true)
+                $(buttons[0]).prop("disabled", false);
+                $(buttons).click(function () {
+    
+                    
+                    if ($(this).textContent == "Changer") {
+                        $(buttons).prop("disabled", false)
+                        $(this).prop("disabled", true)
+                        oneEnabled = true;
+    
+                        let bckColor = $("#chgrBck option:selected").text();
+                        if (bckColor == "Rouge") {
+                            $(document.body).css({
+                                "background-color": "red"
+                            })
+                        } else if (bckColor == "Bleu") {
+                            $(document.body).css({
+                                "background-color": "blue"
+                            })
+                        }
+                        else {
+                            $(document.body).css({
+                                "background-color": "green"
+                            })
+                        }
+    
+                        let txtColor = $("#chgrText option:selected").text();
+                        if (txtColor == "Rouge") {
+                            $(document.body).css({
+                                "color": "red"
+                            })
+                        } else if (txtColor == "Bleu") {
+                            $(document.body).css({
+                                "color": "blue"
+                            })
+                        } else {
+    
+                            $(document.body).css({
+                                "color": "red"
+                            })
+                        }
+                    }
+                    else {
+                        $(buttons).prop("disabled", true)
+                        $(buttons[0]).prop("disabled", false)
+                       
+                        if ($(this).textContent=="Annuler"){
+                            $(document.body).css({
+                                "color": "black",
+                                "background-color":"white"
+                            })
+    
+                        }
+                        
+                    }
+                })
+            })
+    
+    /* Correction du prof 
+    
+    
+    function navClick(){
+        $navButtons.removeClass("active");
+        $(this).toggleClass("active");
+    }
+
+    function 
+        
+        
+        
+        */
+    
+    
+    
+    
+    
+    
+        </script>
+</head>
+
+<body>
+    <h1>Hello jQuery</h1>
+    <h1>Hello Javascript</h1>
+
+    <div id=buttonBar>
+        <button>Changer</button>
+        <button>Valider</button>
+        <button>Annuler</button>
+    </div>
+
+    <br />
+    <fieldset>
+        <legend>Modifier le thème</legend>
+
+        Choisir la couleur de texte
+        <select id="chgrText">
+            <OPTION VALUE="Bleu">Bleu</OPTION>
+            <OPTION VALUE="Rouge">Rouge</OPTION>
+            <OPTION VALUE="Vert">Vert</OPTION>
+        </select>
+        <br />
+        <br />
+
+        Choisir la couleur de fond
+        <select id="chgrBck" name="chgrBck" aria-placeholder="Choisissez une couleur de Fond">
+            <OPTION VALUE="Bleu">Bleu</OPTION>
+            <OPTION VALUE="Rouge">Rouge</OPTION>
+            <OPTION VALUE="Vert">Vert</OPTION>
+
+        </select>
+
+    </fieldset>
+
+   
+
+</body>
+
+</html>

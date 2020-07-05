@@ -1,0 +1,28 @@
+{
+  "users": [
+    {
+      "id": 1,
+      "username": "bob",
+      "email": "bob@bob.fr",
+      "pass": "123"
+    },
+    {
+      "id": 2,
+      "username": "alura",
+      "email": "alura@bob.fr",
+      "pass": "123"
+    },
+    {
+      "id": 3,
+      "username": "teri",
+      "email": "teri@bob.fr",
+      "pass": "123"
+    },
+    {
+      "userName": "toto",
+      "email": "toto@toto.fr",
+      "pass": "789",
+      "id": 4
+    }
+  ]
+}

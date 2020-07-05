@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Menu arborescent</title>
+    <script src="node_modules/jquery/dist/jquery.min.js"></script>
+    <script>
+        $(document).ready(function(){
+            $("li ul").hide();
+            $("li a").click(function(){
+                $(this).next("ul").toggle(500);
+            })
+        })
+    </script>
+    <style> 
+    li a {
+        cursor: pointer;
+        font-weight:bold;
+    }
+    </style>
+</head>
+
+<body>
+
+    <ul>
+        <li>
+            <a>Légumes</a>
+           <ul>
+            <li>
+                <a>Fruits</a>
+                <ul>
+                    <li>Aubergines </li>
+                    <li>Tomates</li>
+                    <li>Courgesttes</li>
+                </ul>
+            </li>
+            <li>
+                    <a>Feuilles</a>
+                    <ul>
+                        <li>Epinards</li>
+                        <li>Blettes</li>
+                        <li>Salade</li>
+                    </ul>
+                </li>
+
+            </ul>  
+
+        </li> 
+        <li>
+                <a>Fruits</a>
+               <ul>
+                <li>
+                    <a>Fruits</a>
+                    <ul>
+                        <li>Aubergines </li>
+                        <li>Tomates</li>
+                        <li>Courgesttes</li>
+                    </ul>
+                </li>
+                <li>
+                        <a>Feuilles</a>
+                        <ul>
+                            <li>Epinards</li>
+                            <li>Blettes</li>
+                            <li>Salade</li>
+                        </ul>
+                    </li>
+    
+                </ul>  
+    
+            </li> 
+    </ul>
+
+
+    </li>
+    </ul>
+
+
+
+
+
+</body>
+
+</html>

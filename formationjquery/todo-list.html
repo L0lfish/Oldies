@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.min.css">
+    <script src="node_modules/jquery/dist/jquery.min.js"></script>
+    <title>My todo-list</title>
+    <style>
+        .hidden {
+            display: none;
+        }
+
+        button.inlist {
+            float: right;
+            margin-left: 10px;
+        }
+
+        #myList {
+            width: 60%;
+            margin: auto;
+        }
+    </style>
+    <script>
+        const URL="http://localhost:3000/tasks";
+        var allTasks =  [];
+        
+        
+        // RECUPERER LA LISTE DE TOUTES LES TACHES #########################################################################################################
+        function refreshTaskList(){
+        $.get(URL, allTasks, loadCallBack);
+        }     
+        function loadCallBack(response) {
+         allTasks = response
+         let $mylist = $('<ul id="myList" class="list-group"></ul>')
+       
+          for(index of allTasks){
+           
+                let $listLine = $("#listRow").clone().removeClass("hidden");
+                $($listLine).children("span").text(index.task);
+                //Le bouton supprimer
+                $($listLine).children("#btnDel").data("id", index.id)
+                $($listLine).children("#btnDel").click(deleteTask);
+                //Le bouton update 
+                $($listLine).children("#btnUpdt").data("id", index.id)
+                $($listLine).children("#btnUpdt").click(updateTask);
+                //La checkbox
+                if(index.isDone == "true"){
+                    $($listLine).children("input").attr("checked","checked");
+                    $($listLine).children("#btnUpdt").prop("disabled", true);
+                    $($listLine).css("background-color","#D7FFDF");
+                }
+                
+                $($mylist).append($listLine)
+               
+                             
+         }
+
+         $("#myList").replaceWith($mylist);
+        
+        }
+            
+         // AJOUTER UNE TACHE ###############################################################################################################################
+        function addTask() {
+            // On récupère la valeur de la saisie utilisateur : 
+           let taskToAdd = $("#taskToDo").val();
+           
+            // Si la saisie n'est pas vide : 
+            if (taskToAdd != "") {
+               var task = {
+                   task: taskToAdd,
+                   isDone: false
+               };
+               //On rajoute a la liste
+               allTasks.push(task);
+
+               //On rajoute a la db
+               $.post(URL, task).done(function(){
+                    console.log("useradded")
+                })
+                .fail(function(err){
+                    console.log(err)
+                })
+                                           
+            refreshTaskList();
+            } // FIN DU IF
+
+               
+        } // FIN FONCTION ADD
+
+        //SUPPRIMER UNE TACHE ###############################################################################################################################
+        function deleteTask() {
+            $(this).parent().index()
+            $(this).parent().remove();
+
+            $.remove(URL, "task.id")
+
+
+         
+        }
+
+        //METTRE A JOUR UNE TACHE ###########################################################################################################################
+        function updateTask() {
+            //Quand la ligne est modifiée, on récupère la valeur du texte dans le champ de saisie :
+            let $row = $(this).parent();
+            $("#taskToDo").val($($row).children("span").text())
+            $("#taskToDo").focus();
+            // On récupère les boutons et on les désactive : 
+            toggleBtns();
+            toggleCheckboxes();
+            // On modifie le bouton principal pour qu'il valide la modification souhaitée
+            $("#addButton").text("Valider la modification");
+            $("#addButton").off("click");
+            // Fonction de validation de modification : 
+            $("#addButton").click(function () {
+                $("#addButton").text("Ajouter");
+                $("#addButton").off("click");
+                $("#addButton").click(addTask);
+               toggleBtns();
+               toggleCheckboxes();
+                $($row).children("span").text($("#taskToDo").val());
+                $("#taskToDo").val("");
+            })
+        }
+
+
+        //Gestion de la checkbox
+        function checkThebox() {
+            if ($(this).is(":checked")) {
+                // Changements cosmétiques
+                $(this).parent().children("#btnUpdt").prop("disabled", true);
+                $(this).parent().css("background-color","#D7FFDF");
+
+            } else {
+                // Changements cosmétiques
+                $(this).parent().children("btnUpdt").prop("disabled",false);
+                $(this).parent().css("background-color","white")
+
+            }
+
+        }
+       
+       
+        // FACTORISATION ####################################################################################################################################
+        function toggleBtns() {
+            let $buttons = $("#myList").children().children("button");
+            if ($($buttons).prop("disabled") == true) {
+                $($buttons).prop("disabled", false);
+             } else {
+                $($buttons).prop("disabled", true);
+            }
+        }
+
+       function toggleCheckboxes(){
+          let $checkboxes = $("#myList").children().children("input");
+           if($($checkboxes).prop("disabled")==true) {
+           $($checkboxes).prop("disabled", false);
+        }else { 
+            $($checkboxes).prop("disabled",true);
+        }
+    
+    }
+
+        $(document).ready(function () {
+         //   $(".form-group").
+         
+          
+            $("#addButton").click(addTask);
+            $("#btnDel").click(deleteTask);
+            $("#btnUpdt").click(updateTask);
+            
+           refreshTaskList();
+
+        })
+
+    </script>
+</head>
+
+<body clas="container-fluid">
+    <h1 class="text-center">MY TODO LIST</h1>
+
+
+    <div class="row justify-content-center">
+        <div class="col-md-3">
+            <div class="form-group">
+                <label>A faire : </label>
+                <input type="text" id="taskToDo" name="taskToDo" class="form-control">
+            </div>
+
+            <button class="btn btn-primary btn-block" id="addButton"> Ajouter </button>
+            <br />
+            <br />
+        </div>
+    </div>
+
+
+    <ul id="myList" class="list-group">
+        <li id="listRow" class="hidden list-group-item">
+            <span></span>
+            <button class="btn btn-danger inlist btn-sm" id="btnDel">Supprimer</button>
+            <button class="btn btn-info inlist btn-sm" id="btnUpdt">Modifier</button>
+            <input type="checkbox" id="isDone" style="float:right">
+        </li>
+
+    </ul>
+
+</body>
+
+</html>

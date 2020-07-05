@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        #spaceship {
+            width: 150px;
+            position: absolute;
+        }
+    </style>
+    <script src="node_modules/jquery/dist/jquery.min.js"></script>
+    <script>
+        const KEY_LEFT = 37;
+        const KEY_UP = 38;
+        const KEY_RIGHT = 39;
+        const KEY_DOWN = 40;
+
+
+        function showSpaceship() {
+            this.element.css({
+                left: this.x + "px",
+                top: this.y + "px",
+                transform: "rotate(" + this.rotation + "deg)"
+            });
+        }
+
+        function moveSpaceship(speed) {
+            let rad = this.rotation * (Math.PI / 180);
+            this.x += (speed * Math.cos(rad));
+            this.y += (speed * Math.sin(rad));
+
+        }
+
+        function animateSpaceship() {
+            $("#spaceship").animate(
+                {
+                   "width": "10%",
+                   "left": "+=500px"
+                },
+                1000
+            );
+        }
+            
+           
+
+
+        $(document).ready(function () {
+            //Définition des propriétés et des méthodes du vaisseau
+            var spaceship = {
+                x: 100,
+                y: 300,
+                rotation: 0,
+                element: $("#spaceship"),
+                display: showSpaceship,
+                move: moveSpaceship
+            };
+
+
+            $(document).keydown(function (even) {
+                switch (even.which) {
+                    case KEY_LEFT:
+                        spaceship.rotation -= 5;
+                        break;
+                    case KEY_RIGHT:
+                        spaceship.rotation += 5;
+                        break;
+                    case KEY_UP:
+                        spaceship.move(5)
+
+                }
+                spaceship.display();
+            })
+            // Affichage du vaisseau
+            spaceship.display();
+            $("#btn").click(animateSpaceship);
+
+        })
+    </script>
+
+</head>
+
+<body>
+    <h1>SUPER TITRE SPATIAL</h1>
+    <button id="btn" type="button">Animate</button>
+    <img src="img/spaceship-png-icon-19.png" id="spaceship" />
+
+</body>
+
+</html>
